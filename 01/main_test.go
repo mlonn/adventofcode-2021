@@ -1,13 +1,13 @@
 package main
 
 import (
-	"advent-of-code-2020/utils"
+	"advent-of-code-2021/utils"
 	"testing"
 )
 
 func BenchmarkPart1(b *testing.B) {
 	input := utils.ReadInput("../inputs/1.txt")
-	solution := 445536
+	solution := 1521
 	for n := 0; n < b.N; n++ {
 		answer := Part1(input)
 		if answer != solution {
@@ -18,7 +18,7 @@ func BenchmarkPart1(b *testing.B) {
 
 func BenchmarkPart2(b *testing.B) {
 	input := utils.ReadInput("../inputs/1.txt")
-	solution := 138688160
+	solution := 1543
 	for n := 0; n < b.N; n++ {
 		answer := Part2(input)
 		if answer != solution {

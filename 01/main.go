@@ -11,15 +11,20 @@ import (
 // Part1 Part 1 of puzzle
 func Part1(input string) int {
 	s := strings.Split(input, "\n")
-	var previous int
 	increase := 0
-	for index, depth := range s {
+	var numbers []int
+	for _, depth := range s {
 		i, _ := strconv.Atoi(depth)
-		if index != 0 && i > previous {
+		numbers = append(numbers, i)
+	}
+	for index := range numbers {
+		if index < 1 {
+			continue
+		}
+
+		if  numbers[index] > numbers[index-1] {
 			increase++
 		}
-		previous = i
-
 	}
 	return increase
 }
