@@ -6,9 +6,9 @@ import (
 )
 
 func TestPart1(t *testing.T) {
-	input := utils.Strings(utils.ReadInput("../inputs/02.txt"))
+	input := utils.ReadInput("../inputs/02.txt")
 	solution := 1727835
-	answer := Dive(input)
+	answer := Dive(parse(input))
 	if answer != solution {
 		t.Fatalf("answer = %q; solution %q", answer, solution)
 	}
@@ -16,9 +16,9 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	input := utils.Strings(utils.ReadInput("../inputs/02.txt"))
+	input := utils.ReadInput("../inputs/02.txt")
 	solution := 1544000595
-	answer := DiveWithAim(input)
+	answer := DiveWithAim(parse(input))
 	if answer != solution {
 		t.Fatalf("answer = %q; solution %q", answer, solution)
 	}
@@ -26,10 +26,11 @@ func TestPart2(t *testing.T) {
 }
 
 func BenchmarkPart1(b *testing.B) {
-	input := utils.Strings(utils.ReadInput("../inputs/02.txt"))
+	input := utils.ReadInput("../inputs/02.txt")
+	instructions := parse(input)
 	solution := 1727835
 	for n := 0; n < b.N; n++ {
-		answer := Dive(input)
+		answer := Dive(instructions)
 		if answer != solution {
 			b.Fatalf("answer = %q; solution %q", answer, solution)
 		}
@@ -37,10 +38,11 @@ func BenchmarkPart1(b *testing.B) {
 }
 
 func BenchmarkPart2(b *testing.B) {
-	input := utils.Strings(utils.ReadInput("../inputs/02.txt"))
+	input := utils.ReadInput("../inputs/02.txt")
+	instructions := parse(input)
 	solution := 1544000595
 	for n := 0; n < b.N; n++ {
-		answer := DiveWithAim(input)
+		answer := DiveWithAim(instructions)
 		if answer != solution {
 			b.Fatalf("answer = %q; solution %q", answer, solution)
 		}

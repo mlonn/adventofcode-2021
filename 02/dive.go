@@ -8,50 +8,61 @@ import (
 	"time"
 )
 
+type Instruction struct {
+	Amount    int
+	Direction string
+}
+
 // Dive Part 1 of puzzle
-func Dive(input []string) int {
+func Dive(input []Instruction) int {
 	h, v := 0, 0
-	for _, line := range input {
-		s := strings.Split(line, " ")
-		amountString, direction := s[1], s[0]
-		amount, _ := strconv.Atoi(amountString)
-		switch direction {
+	for _, instruction := range input {
+		switch instruction.Direction {
 		case "down":
-			v += amount
+			v += instruction.Amount
 		case "up":
-			v -= amount
+			v -= instruction.Amount
 		case "forward":
-			h += amount
+			h += instruction.Amount
 		}
 	}
 	return h * v
 }
 
 // DiveWithAim Part 2 of puzzle
-func DiveWithAim(input []string) int {
+func DiveWithAim(input []Instruction) int {
 	h, v, a := 0, 0, 0
-	for _, line := range input {
-		s := strings.Split(line, " ")
-		amountString, direction := s[1], s[0]
-		amount, _ := strconv.Atoi(amountString)
-		switch direction {
+	for _, instruction := range input {
+		switch instruction.Direction {
 		case "down":
-			a += amount
+			a += instruction.Amount
 		case "up":
-			a -= amount
+			a -= instruction.Amount
 		case "forward":
-			h += amount
-			v += a * amount
+			h += instruction.Amount
+			v += a * instruction.Amount
 		}
 	}
 	return h * v
 }
 
+func parse(input string) []Instruction {
+	list := utils.Strings(input)
+	var instructions []Instruction
+	for _, line := range list {
+		s := strings.Split(line, " ")
+		amount, _ := strconv.Atoi(s[1])
+		instructions = append(instructions, Instruction{Amount: amount, Direction: s[0]})
+
+	}
+	return instructions
+}
+
 func main() {
-	stringInput := utils.Input(2)
-	input := utils.Strings(stringInput)
+	input := utils.Input(2)
+	instructions := parse(input)
 	start := time.Now()
-	fmt.Println("Part 1: ", Dive(input), "Time", time.Since(start))
+	fmt.Println("Part 1: ", Dive(instructions), "Time", time.Since(start))
 	start = time.Now()
-	fmt.Println("Part 2: ", DiveWithAim(input), "Time", time.Since(start))
+	fmt.Println("Part 2: ", DiveWithAim(instructions), "Time", time.Since(start))
 }
