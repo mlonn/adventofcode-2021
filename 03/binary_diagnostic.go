@@ -50,7 +50,7 @@ func mostCommon(input []int, bit int) int {
 
 func leastCommon(input []int, bit int) int {
 	one, zero := countBits(input, bit)
-	if zero < one {
+	if zero <= one {
 		return 0
 	} else {
 		return 1
