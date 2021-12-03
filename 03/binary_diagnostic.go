@@ -9,8 +9,8 @@ import (
 
 // Part1 Part 1 of puzzle
 func Part1(input []string) int64 {
-
-	var sums [12]int
+	const wordLength = 12
+	var sums [wordLength]int
 	for _, line := range input {
 		for i, bit := range line {
 			if bit == '1' {
@@ -19,62 +19,47 @@ func Part1(input []string) int64 {
 
 		}
 	}
-	var gamma string
-	var epsilon string
-	for _, sum := range sums {
+	gamma, epsilon := int64(0), int64(0)
+	for i, sum := range sums {
+		bit := (wordLength - 1) - i
 		if sum >= len(input)/2 {
-			gamma += "1"
-			epsilon += "0"
+			gamma |= 1 << bit
+			epsilon &= ^(1 << bit)
 		} else {
-			gamma += "0"
-			epsilon += "1"
+			epsilon |= 1 << bit
+			gamma &= ^(1 << bit)
 		}
+
 	}
-
-	g, _ := strconv.ParseInt(gamma, 2, 64)
-	e, _ := strconv.ParseInt(epsilon, 2, 64)
-
-	return e * g
+	return gamma * epsilon
 }
 
 // Part2 Part 2 of puzzle
 func Part2(input []string) int64 {
-	o2 := o2(input, 0)
-	co2 := co2(input, 0)
+	o2 := reduce(input, 0, mostCommon)
+	co2 := reduce(input, 0, leastCommon)
 	return o2 * co2
 }
 
-func o2(input []string, bit int) int64 {
-	var correct uint8
-	one, zero := 0, 0
-	for _, line := range input {
-		if line[bit] == '1' {
-			one++
-		} else {
-			zero++
-		}
-	}
+func mostCommon(input []string, bit int) uint8 {
+	one, zero := countBits(input, bit)
 	if one >= zero {
-		correct = '1'
+		return '1'
 	} else {
-		correct = '0'
+		return '0'
 	}
-
-	var left []string
-
-	for _, line := range input {
-		if line[bit] == correct {
-			left = append(left, line)
-		}
-	}
-	if len(left) > 1 {
-		return o2(left, bit+1)
-	}
-	value, _ := strconv.ParseInt(left[0], 2, 64)
-	return value
 }
-func co2(input []string, bit int) int64 {
-	var correct uint8
+
+func leastCommon(input []string, bit int) uint8 {
+	one, zero := countBits(input, bit)
+	if zero <= one {
+		return '0'
+	} else {
+		return '1'
+	}
+}
+
+func countBits(input []string, bit int) (int, int) {
 	one, zero := 0, 0
 	for _, line := range input {
 		if line[bit] == '1' {
@@ -83,11 +68,11 @@ func co2(input []string, bit int) int64 {
 			zero++
 		}
 	}
-	if one >= zero {
-		correct = '0'
-	} else {
-		correct = '1'
-	}
+	return one, zero
+}
+
+func reduce(input []string, bit int, correctFunc func(input []string, bit int) uint8) int64 {
+	correct := correctFunc(input, bit)
 
 	var left []string
 
@@ -96,9 +81,11 @@ func co2(input []string, bit int) int64 {
 			left = append(left, line)
 		}
 	}
+
 	if len(left) > 1 {
-		return co2(left, bit+1)
+		return reduce(left, bit+1, correctFunc)
 	}
+
 	value, _ := strconv.ParseInt(left[0], 2, 64)
 	return value
 }
