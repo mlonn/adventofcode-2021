@@ -8,7 +8,7 @@ import (
 )
 
 // Part1 Part 1 of puzzle
-func Part1(input []string) int64 {
+func Part1(input []string) int {
 	const wordLength = 12
 	var sums [wordLength]int
 	for _, line := range input {
@@ -19,7 +19,7 @@ func Part1(input []string) int64 {
 
 		}
 	}
-	gamma, epsilon := int64(0), int64(0)
+	gamma, epsilon := 0, 0
 	for i, sum := range sums {
 		bit := (wordLength - 1) - i
 		if sum >= len(input)/2 {
@@ -35,7 +35,7 @@ func Part1(input []string) int64 {
 }
 
 // Part2 Part 2 of puzzle
-func Part2(input []string) int64 {
+func Part2(input []string) int {
 	o2 := reduce(input, 0, mostCommon)
 	co2 := reduce(input, 0, leastCommon)
 	return o2 * co2
@@ -71,10 +71,10 @@ func countBits(input []string, bit int) (int, int) {
 	return one, zero
 }
 
-func reduce(input []string, bit int, correctFunc func(input []string, bit int) uint8) int64 {
+func reduce(input []string, bit int, correctFunc func(input []string, bit int) uint8) int {
 	if len(input) == 1 {
 		value, _ := strconv.ParseInt(input[0], 2, 64)
-		return value
+		return int(value)
 	}
 
 	correct := correctFunc(input, bit)
