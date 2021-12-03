@@ -9,28 +9,27 @@ import (
 
 // Part1 Part 1 of puzzle
 func Part1(input []string) int {
-	const wordLength = 12
-	var sums [wordLength]int
+	wordLength := len(input[0])
+	ones := make([]int, wordLength)
 	for _, line := range input {
 		for i, bit := range line {
 			if bit == '1' {
-				sums[i] = sums[i] + 1
+				ones[i] = ones[i] + 1
 			}
 
 		}
 	}
+
 	gamma, epsilon := 0, 0
-	for i, sum := range sums {
-		bit := (wordLength - 1) - i
-		if sum >= len(input)/2 {
+	for i, numberOfOnes := range ones {
+		bit := wordLength - i - 1
+		if numberOfOnes >= len(input)/2 {
 			gamma |= 1 << bit
-			epsilon &= ^(1 << bit)
 		} else {
 			epsilon |= 1 << bit
-			gamma &= ^(1 << bit)
 		}
-
 	}
+
 	return gamma * epsilon
 }
 
