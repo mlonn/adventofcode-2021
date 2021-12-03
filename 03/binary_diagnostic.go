@@ -72,8 +72,12 @@ func countBits(input []string, bit int) (int, int) {
 }
 
 func reduce(input []string, bit int, correctFunc func(input []string, bit int) uint8) int64 {
-	correct := correctFunc(input, bit)
+	if len(input) == 1 {
+		value, _ := strconv.ParseInt(input[0], 2, 64)
+		return value
+	}
 
+	correct := correctFunc(input, bit)
 	var left []string
 
 	for _, line := range input {
@@ -81,13 +85,7 @@ func reduce(input []string, bit int, correctFunc func(input []string, bit int) u
 			left = append(left, line)
 		}
 	}
-
-	if len(left) > 1 {
-		return reduce(left, bit+1, correctFunc)
-	}
-
-	value, _ := strconv.ParseInt(left[0], 2, 64)
-	return value
+	return reduce(left, bit+1, correctFunc)
 }
 
 func main() {
