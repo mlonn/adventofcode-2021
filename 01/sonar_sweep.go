@@ -28,21 +28,11 @@ func CountIncresingSlidingWindow(input []int) int {
 		if i < 3 {
 			continue
 		}
-		a := sum(input[i-3 : i])
-		b := sum(input[i-2 : i+1])
-		if b > a {
+		if input[i] > input[i-3] {
 			increase++
 		}
 	}
 	return increase
-}
-
-func sum(array []int) int {
-	result := 0
-	for _, v := range array {
-		result += v
-	}
-	return result
 }
 
 func main() {
