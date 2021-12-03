@@ -21,6 +21,16 @@ func Ints(input string) []int {
 	return numbers
 }
 
+func Binary(input string) []int {
+	s := Strings(input)
+	var numbers []int
+	for _, depth := range s {
+		i, _ := strconv.ParseInt(depth, 2, 64)
+		numbers = append(numbers, int(i))
+	}
+	return numbers
+}
+
 func Strings(input string) []string {
 	return strings.Split(input, "\n")
 }
