@@ -10,7 +10,7 @@ import (
 // Part1 Part 1 of puzzle
 func Part1(input []string) int {
 
-	b, c, a, l := 0, 0, 0, 0
+	points := 0
 	for _, line := range input {
 		var open string
 	loop:
@@ -21,28 +21,28 @@ func Part1(input []string) int {
 				open += string(ch)
 			case ')':
 				if open[n] != '(' {
-					b++
+					points += 3
 					break loop
 				} else {
 					open = open[:n]
 				}
 			case ']':
 				if open[n] != '[' {
-					a++
+					points += 57
 					break loop
 				} else {
 					open = open[:n]
 				}
 			case '}':
 				if open[n] != '{' {
-					c++
+					points += 1197
 					break loop
 				} else {
 					open = open[:n]
 				}
 			case '>':
 				if open[n] != '<' {
-					l++
+					points += 25137
 					break loop
 				} else {
 					open = open[:n]
@@ -51,7 +51,7 @@ func Part1(input []string) int {
 		}
 	}
 
-	return b*3 + a*57 + c*1197 + l*25137
+	return points
 }
 
 // Part2 Part 2 of puzzle
