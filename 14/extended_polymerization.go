@@ -39,15 +39,14 @@ func Part1(template string, rules map[string]string) int {
 
 // Part2 Part 2 of puzzle
 func Part2(template string, rules map[string]string) int {
-	used := make(map[string]int)
+	used := make(map[uint8]int)
 	pairs := make(map[string]int)
 	for i := 0; i < len(template)-1; i++ {
 		instruction := string(template[i]) + string(template[i+1])
 		pairs[instruction]++
-		used[string(template[i])]++
+
 	}
-	// add the last character since it's not looped over above
-	used[string(template[len(template)-1])]++
+
 	for step := 0; step < 40; step++ {
 		next := make(map[string]int)
 		for k, v := range pairs {
@@ -57,7 +56,6 @@ func Part2(template string, rules map[string]string) int {
 			result := rules[p]
 			p1 := string(p[0]) + result
 			p2 := result + string(p[1])
-			used[result] += i
 			next[p] -= i
 			if next[p] < 1 {
 				delete(next, p)
@@ -68,7 +66,11 @@ func Part2(template string, rules map[string]string) int {
 		}
 		pairs = next
 	}
-
+	for s, i := range pairs {
+		used[s[1]] += i
+	}
+	// add the first character of the input since that is not the second character in any pair
+	used[template[0]]++
 	min, max := math.MaxInt, 0
 	for _, i := range used {
 		if i < min {
