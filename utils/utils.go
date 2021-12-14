@@ -35,6 +35,10 @@ func Strings(input string) []string {
 	return strings.Split(input, "\n")
 }
 
+func Groups(input string) []string {
+	return strings.Split(input, "\n\n")
+}
+
 // Input returns the input for the specified year and day as a string,
 // downloading it if it does not already exist on disk.
 func Input(day int) string {
